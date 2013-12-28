@@ -4,7 +4,7 @@ import urllib
 from flask import Flask, request, jsonify
 
 config = {
-    'base_path': 'C:\\Users\\Derrik\\Music\\Pandora'
+    'base_path': 'C:\\Users\\YourUsernameHere\\Music\\Pandora'
 }
 
 app = Flask( __name__ )
