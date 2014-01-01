@@ -4,7 +4,7 @@ $( function() {
     var currentSongUrl = undefined;
 
     // Setup the listener for pandora's outgoing requests
-    chrome.webRequest.onCompleted.addListener( function( details ) {
+    chrome.webRequest.onBeforeRequest.addListener( function( details ) {
 
         // Test the url against a regex of the different locations the songs live!
         if ( details.url.match( /(http.*\.pandora.com\/access\/.*)/i ) ) {
