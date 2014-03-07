@@ -1,10 +1,11 @@
 import os
+from os.path import expanduser
 import urllib
 
 from flask import Flask, request, jsonify
 
 config = {
-    'base_path': 'C:\\Users\\YourUsernameHere\\Music\\Pandora'
+    'base_path': os.sep.join((expanduser("~"), 'Music', 'Pandora'))
 }
 
 app = Flask( __name__ )
@@ -30,9 +31,9 @@ def pandoraDownloader():
 
 def make_song_path( title, artist, with_file = True ):
     if with_file:
-        return '%s\\%s\\%s.mp4' % ( config['base_path'], artist, title )
+        return os.sep.join( (config['base_path'], artist, title) ) + '.mp4'
 
-    return '%s\\%s' % ( config['base_path'], artist )
+    return os.sep.join( (config['base_path'], artist) )
 
 if __name__ == '__main__':
     app.run(debug=True)
