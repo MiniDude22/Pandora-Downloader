@@ -10,9 +10,9 @@ $( function() {
 
         // Send the download request/song information to the background manager
         chrome.runtime.sendMessage({
-            title:  $('.songTitle')    .text(),
-            artist: $('.artistSummary').text(),
-            album:  $('.albumTitle')   .text(),
+            title:  $('.playerBarSong').text(),
+            artist: $('.playerBarArtist').text(),
+            album:  $('.playerBarAlbum').text()
         }, function( response ) {} );
     });
 
