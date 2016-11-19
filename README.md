@@ -6,6 +6,7 @@ It uses a small python Flask web server to handle the downloading and tagging of
 
 Update 2.0!
 ===========
+ - Updated the request regular expression to match new server urls, so it works again
  - Now uses the Mutagen library to add tags to the songs including album art
  - Added a continuous mode that will download all songs that play
  - Made the download button more responsive:
