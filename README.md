@@ -4,6 +4,10 @@ This is a simple project that uses a google chrome extension to interface with P
 
 It uses a small python Flask web server to handle the downloading and tagging of the songs
 
+I started this project to implement a known method of getting the song into a Chrome extension so that I could learn how they work.
+
+Please note that use of this extension is a violation of Pandora's [Terms of Use](https://www.pandora.com/legal).
+
 Update 2.0!
 ===========
  - Updated the request regular expression to match new server urls, so it works again
