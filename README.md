@@ -12,6 +12,8 @@ Update 2.0!
  - Made the download button more responsive:
    - Is disabled when a song is not ready to download
    - Displays the title of the song so you know it's collected the info properly
+ - Now works if Pandora isn't the active tab ( Needed for continuous downloading )
+ - Unicode support
  - Code is a bit more organized 
 
 Installation

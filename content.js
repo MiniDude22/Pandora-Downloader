@@ -83,15 +83,4 @@ $( function() {
         };
     });
 
-    // When the tab isn't active, the events aren't received from background.js
-    // So when we activate the tab, update the button info
-    chrome.tabs.onActivated.addListener(function(tabId, changeInfo, tab) {
-        if (lastTitle != $('.playerBarSong').text()) { 
-            $('.pd-download-single').text("Download - " + $('.playerBarSong').text() );
-        }
-        if ( !continuous ){
-            $('.pd-download-single').prop("disabled", false);
-        }
-    });
-
 })

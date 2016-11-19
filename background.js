@@ -62,14 +62,6 @@ $( function() {
             type: 'POST',
             url: 'http://127.0.0.1:5000/download',
             data: $.extend( request, {url: currentSongUrl} ),
-            // data: {
-            //     url      : currentSongUrl,
-            //     station  : request.station,
-            //     title    : request.title,
-            //     artist   : request.artist,
-            //     album    : request.album,
-            //     albumArt : request.albumArt
-            // },
             // Handle the responses we can get
             success: function( data ) {
                 if ( data.status == 'alreadyDownloaded' ) {

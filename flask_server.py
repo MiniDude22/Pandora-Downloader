@@ -17,7 +17,7 @@ save_template = os.sep.join((
     "{artist}",
     # "{album} - {title}.mp4"
     "{title}.mp4"
-))
+)).encode('utf-8')
 
 app = Flask( "Pandora Downloader Server" )
 
@@ -26,11 +26,11 @@ def pandoraDownloader():
 
     # Build the song's path - remove any invalid characters
     song_path = save_template.format(
-        station = re.sub('[<>\*:\\/\"|?]', '', request.form['station'] ),
-        artist  = re.sub('[<>\*:\\/\"|?]', '', request.form['artist' ] ),
-        album   = re.sub('[<>\*:\\/\"|?]', '', request.form['album'  ] ),
-        title   = re.sub('[<>\*:\\/\"|?]', '', request.form['title'  ] )
-    )
+        station = re.sub(u'[<>\*:\\/\"|?]', '', request.form['station'].encode('utf-8') ),
+        artist  = re.sub(u'[<>\*:\\/\"|?]', '', request.form['artist' ].encode('utf-8') ),
+        album   = re.sub(u'[<>\*:\\/\"|?]', '', request.form['album'  ].encode('utf-8') ),
+        title   = re.sub(u'[<>\*:\\/\"|?]', '', request.form['title'  ].encode('utf-8') )
+    ).decode('utf-8')
 
     # check to see if the file has been downloaded before!
     if os.path.exists( song_path ):
@@ -38,7 +38,7 @@ def pandoraDownloader():
         return jsonify( status = 'alreadyDownloaded' )
 
     else:
-        print( 'Downloading ""' + request.form['title'] + '"' )
+        print( 'Downloading ""' + request.form['title'].encode('utf-8') + '"' )
 
         # Create the directories if they don't exist
         if not os.path.isdir( os.path.split(song_path)[0] ): os.makedirs( os.path.split(song_path)[0] )
@@ -48,9 +48,9 @@ def pandoraDownloader():
 
         song = MP4( song_path )
 
-        song['\xa9nam'] = [ request.form['title']  ]
-        song['\xa9ART'] = [ request.form['artist'] ]
-        song['\xa9alb'] = [ request.form['album']  ]
+        song['\xa9nam'] = [ request.form['title'].encode('utf-8')  ]
+        song['\xa9ART'] = [ request.form['artist'].encode('utf-8') ]
+        song['\xa9alb'] = [ request.form['album'].encode('utf-8')  ]
 
         albumArtRequest = urllib.urlopen( request.form['albumArt'] )
         albumArt = MP4Cover( albumArtRequest.read() )
