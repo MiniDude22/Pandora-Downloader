@@ -2,23 +2,27 @@
     "manifest_version": 2,
 
     "name": "Pandora Downloader",
+    "version": "2.0",
     "description": "Adds a song downloader button to your pandora station!",
-    "version": "1.2",
+
+    "author": "Mini Dude 22",
 
     "permissions": [
         "webRequest",
+        "tabs",
         "<all_urls>"
     ],
 
     "content_scripts": [{
         // Load the jquery, and then our content script to be ran on pages, to display the download button
-        "js"         : [ "jquery-2.0.3.min.js", "content.js" ],
+        "js"         : [ "jquery-3.1.1.min.js", "content.js" ],
         "css"        : [ "content.css" ],
         "matches"    : [ "http://www.pandora.com/*", "https://www.pandora.com/*" ]
     }],
 
     // Initialize our background worker page that will manage the information
     "background": {
-        "page": "background.html"
+        "scripts": [ "jquery-3.1.1.min.js", "background.js" ]
+        // "page": "background.html"
     }
 }

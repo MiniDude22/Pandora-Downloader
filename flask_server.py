@@ -1,39 +1,67 @@
 import os
-from os.path import expanduser
+import re
 import urllib
 
 from flask import Flask, request, jsonify
 
-config = {
-    'base_path': os.sep.join((expanduser("~"), 'Music', 'Pandora'))
-}
+from mutagen.mp4 import MP4, MP4Cover
 
-app = Flask( __name__ )
+# Modify this line to change where the songs are saved
+# Possible Variables - Mix and match as desired
+# {station} {artist} {album} {title}
+save_template = os.sep.join((
+    os.path.expanduser("~"),
+    'Music',
+    'Pandora',
+    "{station}",
+    "{artist}",
+    # "{album} - {title}.mp4"
+    "{title}.mp4"
+))
 
+app = Flask( "Pandora Downloader Server" )
 
 @app.route( '/download', methods=['POST'] )
 def pandoraDownloader():
 
-    song_path = make_song_path( request.form['title'], request.form['artist'] )
-    song_dir  = make_song_path( request.form['title'], request.form['artist'], False )
+    # Build the song's path - remove any invalid characters
+    song_path = save_template.format(
+        station = re.sub('[<>\*:\\/\"|?]', '', request.form['station'] ),
+        artist  = re.sub('[<>\*:\\/\"|?]', '', request.form['artist' ] ),
+        album   = re.sub('[<>\*:\\/\"|?]', '', request.form['album'  ] ),
+        title   = re.sub('[<>\*:\\/\"|?]', '', request.form['title'  ] )
+    )
 
     # check to see if the file has been downloaded before!
     if os.path.exists( song_path ):
         print( 'Song found already' )
-        return jsonify( status = 'fail', reason = 'Song has already been saved.' )
+        return jsonify( status = 'alreadyDownloaded' )
 
     else:
-        print( 'Downloading song!' )
-        if not os.path.exists( song_dir ): os.makedirs( song_dir )
+        print( 'Downloading ""' + request.form['title'] + '"' )
+
+        # Create the directories if they don't exist
+        if not os.path.isdir( os.path.split(song_path)[0] ): os.makedirs( os.path.split(song_path)[0] )
+
+        # Download the song
         urllib.urlretrieve( request.form['url'], song_path )
+
+        song = MP4( song_path )
+
+        song['\xa9nam'] = [ request.form['title']  ]
+        song['\xa9ART'] = [ request.form['artist'] ]
+        song['\xa9alb'] = [ request.form['album']  ]
+
+        albumArtRequest = urllib.urlopen( request.form['albumArt'] )
+        albumArt = MP4Cover( albumArtRequest.read() )
+        albumArtRequest.close()
+
+        song['covr'] = [ albumArt ]
+
+        song.save()
+
+        print( 'Download Complete!' )
         return jsonify( status = 'success' )
-
-
-def make_song_path( title, artist, with_file = True ):
-    if with_file:
-        return os.sep.join( (config['base_path'], artist, title) ) + '.mp4'
-
-    return os.sep.join( (config['base_path'], artist) )
 
 if __name__ == '__main__':
     app.run(debug=True)

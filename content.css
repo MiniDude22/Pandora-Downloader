@@ -1,11 +1,18 @@
-.pandora-downloader {
+.pd-download-single {
     position: absolute;
     right: 270px;
-    top: 5px;
+    top: 4px;
     z-index: 20000;
 }
 
-.pandora-downloader-infobox {
+.pd-download-continuous {
+    position: absolute;
+    left: 130px;
+    top: 4px;
+    z-index: 20000;
+}
+
+.pd-infobox {
     display: none;
     color: black;
     position: fixed;
