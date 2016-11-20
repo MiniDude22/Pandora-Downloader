@@ -9,6 +9,12 @@ $( function() {
     // Add the info box to the body which will be displayed later
     $('body').append('<div class="pd-infobox"></div>');
 
+    // Looping function that will click the still listening button
+    function imListening() {
+        $('.still_listening.button.btn_bg').click();
+        setTimeout( imListening, 5000 );
+    }; imListening();
+
     // Display the infobox with a message for a short while
     function infoBoxMessage( message ) {
         $('.pd-infobox')

@@ -38,7 +38,7 @@ def pandoraDownloader():
         return jsonify( status = 'alreadyDownloaded' )
 
     else:
-        print( 'Downloading ""' + request.form['title'].encode('utf-8') + '"' )
+        print( 'Downloading "' + request.form['title'].encode('utf-8') + '"' )
 
         # Create the directories if they don't exist
         if not os.path.isdir( os.path.split(song_path)[0] ): os.makedirs( os.path.split(song_path)[0] )
