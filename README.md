@@ -78,7 +78,7 @@ save_template = os.sep.join((
     'Pandora',
     "{station}",
     "{artist}",
-    "{album} - {title}.mp4"
+    "{album} - {title}.m4a"
 ))
 ```
 **You should also be able to re-use keywords if desired*

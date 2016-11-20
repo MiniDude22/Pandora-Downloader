@@ -15,8 +15,8 @@ save_template = os.sep.join((
     'Pandora',
     "{station}",
     "{artist}",
-    # "{album} - {title}.mp4"
-    "{title}.mp4"
+    # "{album} - {title}.m4a"
+    "{title}.m4a"
 )).encode('utf-8')
 
 app = Flask( "Pandora Downloader Server" )
