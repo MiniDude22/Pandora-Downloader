@@ -15,7 +15,7 @@
 
     "content_scripts": [{
         // Load the jquery, and then our content script to be ran on pages, to display the download button
-        "js"         : [ "jquery-3.1.1.min.js", "content.js" ],
+        "js"         : [ "jquery-3.1.1.min.js", "jquery-observe.js", "content.js" ],
         "css"        : [ "content.css" ],
         "matches"    : [ "http://www.pandora.com/*", "https://www.pandora.com/*" ]
     }],

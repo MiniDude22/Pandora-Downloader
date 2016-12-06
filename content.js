@@ -9,11 +9,17 @@ $( function() {
     // Add the info box to the body which will be displayed later
     $('body').append('<div class="pd-infobox"></div>');
 
-    // Looping function that will click the still listening button
-    function imListening() {
-        $('.still_listening.button.btn_bg').click();
-        setTimeout( imListening, 5000 );
-    }; imListening();
+    // Click the keep listening button
+    var keepListening = function(){
+        // Need's the [0], which is inconsistant with using the browser console, but oh well.
+        $('.still_listening.button.btn_bg')[0].click();
+    };
+
+    // Watch the body for when the still listening button is added to it.
+    // https://github.com/MiniDude22/jquery-observe
+    $('body').observe( 'added', '.still_listening', function( record ){
+        setTimeout( keepListening, 3000 );
+    });
 
     // Display the infobox with a message for a short while
     function infoBoxMessage( message ) {
