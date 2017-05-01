@@ -18,8 +18,8 @@ base_path = os.sep.join(( os.path.expanduser("~"), 'Music', 'Pandora' ))
 save_template = os.sep.join((
     "{station}",
     "{artist}",
-    # "{album} - {title}.m4a"
-    "{title}.m4a"
+    "{album} - {title}.m4a"
+    # "{title}.m4a"
 )).encode('utf-8')
 
 # =============================================================================

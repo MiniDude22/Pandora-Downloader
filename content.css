@@ -1,15 +1,23 @@
 .pd-download-single {
+    color: #224099;
+    font-size: 0.9em;
     position: absolute;
-    right: 270px;
-    top: 4px;
+    left: 20px;
+    top: -24px;
     z-index: 20000;
 }
 
 .pd-download-continuous {
     position: absolute;
-    left: 130px;
-    top: 4px;
     z-index: 20000;
+    left: -167px;
+    top: -24px;
+    font-size: 0.9em;
+    color: #224099;
+}
+
+.pd-download-continuous[disabled], .pd-download-single[disabled] {
+    color: rgba(34, 64, 153, 0.55);
 }
 
 .pd-infobox {
@@ -22,4 +30,5 @@
     border-left: 2px black solid;
     border-top: 2px black solid;
     padding: 10px;
+    z-index: 20000;
 }
