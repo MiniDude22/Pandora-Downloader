@@ -8,6 +8,7 @@ I started this project to implement a known method of getting the song into a Ch
 
 Please note that use of this extension is a violation of Pandora's [Terms of Use](https://www.pandora.com/legal).
 
+
 Update 2.0!
 ===========
  - Updated the request regular expression to match new server urls, so it works again
@@ -19,6 +20,10 @@ Update 2.0!
  - Now works if Pandora isn't the active tab ( Needed for continuous downloading )
  - Unicode support
  - Code is a bit more organized 
+
+Remove Chrome Developer Warning
+===============================
+Follow the instructions [here](http://stackoverflow.com/a/30361260).
 
 Installation
 ============

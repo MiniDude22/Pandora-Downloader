@@ -30,6 +30,14 @@ $(function() {
 
     // Send the download request/song information to background.js
     function downloadSong() {
+        console.log({
+            station  : $('.StationListItem__content--current span').text(),
+            title    : getSongTitle(),
+            artist   : $('.nowPlayingTopInfo__current__artistName').text(),
+            album    : $('.nowPlayingTopInfo__current__albumName' ).text(),
+            albumArt : $("div[data-qa='album_active_image']").css('background-image').replace(/^url\(["']?/, '').replace(/["']?\)$/, '')
+        });
+
         chrome.runtime.sendMessage({
             station  : $('.StationListItem__content--current span').text(),
             title    : getSongTitle(),
@@ -53,7 +61,8 @@ $(function() {
 
 
         // if we are in continuous mode then download the song
-        if ( continuous ){ downloadSong(); }
+        // Try waiting a second because it seems like titles are getting pulled wrong.
+        if ( continuous ){ setTimeout(downloadSong, 1000); }
 
         // only re-enable the downlaod button if we aren't continuously downloading songs
         else { $('.pd-download-single').prop("disabled", false); }
@@ -67,13 +76,15 @@ $(function() {
     // ------------------------------------------------------------------------
     // Function to click the "I'm still listening" button
     function keepListening() {
+        console.log( $('.StillListeningBody button') );
+        console.log( "Still listening click!" );
         // Need's the [0], which is inconsistant with using the browser console, but oh well.
-        $('.still_listening.button.btn_bg')[0].click();
+        $('.StillListeningBody button')[0].click();
     };
 
     // Watch the body for when the still listening button is added to it.
     // https://github.com/MiniDude22/jquery-observe
-    $('body').observe( 'added', '.still_listening', function( record ){
+    $('body').observe( 'added', '.StillListeningBody', function( record ){
         setTimeout( keepListening, 3000 );
     });
 
