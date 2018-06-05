@@ -53,18 +53,24 @@ $(function() {
     continuous  = false;
     function waitForSongData() {
 
+        console.log('looking for song data', lastTitle, getSongTitle());
+
         // In case we are already looping - possible when skipping a song quickly
         clearTimeout( lastTimeout );
 
         // If the song data isn't there 'sleep' for a second
-        if (lastTitle == getSongTitle()) { lastTimeout = setTimeout( waitForSongData, 1000 ); return; };
+        if (lastTitle == getSongTitle()) {
+            lastTimeout = setTimeout( waitForSongData, 1000 );
+            return;
+        };
 
+        console.log('song data found');
 
         // if we are in continuous mode then download the song
         // Try waiting a second because it seems like titles are getting pulled wrong.
         if ( continuous ){ setTimeout(downloadSong, 1000); }
 
-        // only re-enable the downlaod button if we aren't continuously downloading songs
+        // only re-enable the download button if we aren't continuously downloading songs
         else { $('.pd-download-single').prop("disabled", false); }
 
         // Either way update the text on the download button because it looks nice
@@ -78,7 +84,7 @@ $(function() {
     function keepListening() {
         console.log( $('.StillListeningBody button') );
         console.log( "Still listening click!" );
-        // Need's the [0], which is inconsistant with using the browser console, but oh well.
+        // Need's the [0], which is inconsistent with using the browser console, but oh well.
         $('.StillListeningBody button')[0].click();
     };
 
@@ -95,20 +101,20 @@ $(function() {
     $('body').observe( 'added', '.Tuner__Control__ThumbDown', function( record ){
 
         // Append the continuous download button next to the pandora logo
-        $('.Tuner__Control__ThumbDown').before('<button class="pd-download-continuous">Start Continuous Download</button>');
+        $('.Tuner__Control__ThumbDown').before('<div class="Tuner__Control Tuner__Control_Download"><button class="pd-download-continuous">Start Continuous Download</button></div>');
 
         // Append the download button left of the Thumbs Down
         // initially disabled... Will be enabled when the song loads and is ready to download
-        $('.Tuner__Control__ThumbDown').before('<button class="pd-download-single" disabled=disabled>Download</button>');
+        $('.Tuner__Control__ThumbDown').before('<div class="Tuner__Control Tuner__Control_Download"><button class="pd-download-single" disabled=disabled>Download</button></div>');
 
         // Add the info box to the body which will be displayed later
         $('body').append('<div class="pd-infobox"></div>');
 
         // Add functionality to the download button.
-        $('.pd-download-single').click( function() { downloadSong(); });
+        $('.pd-download-single').click(() => { downloadSong() });
 
         // Make the continuous button toggleable
-        $('.pd-download-continuous').click( function() {
+        $('.pd-download-continuous').click(() => {
             if ( continuous ){
                 $('.pd-download-continuous').text( "Start Continuous Download" );
                 $('.pd-download-single').prop("disabled", false);
@@ -120,14 +126,14 @@ $(function() {
         });
 
         // Message handler for messages from background.js
-        chrome.runtime.onMessage.addListener( function( request, sender, sendResponse ) {
+        chrome.runtime.onMessage.addListener(( request, sender, sendResponse ) => {
             console.log( request );
             if ( request.type == "info" ) { infoBoxMessage( request.data ); };
             if ( request.type == "disableDownloadButton" ) { $('.pd-download-single').prop("disabled", true ); };
             if ( request.type == "enableDownloadButton"  ) { $('.pd-download-single').prop("disabled", false); };
             if ( request.type == "newSong" ) {
                 $('.pd-download-single').prop("disabled", true);
-                lastTitle = getSongTitle();
+                // lastTitle = getSongTitle();
                 waitForSongData(); 
             };
         });

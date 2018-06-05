@@ -78,7 +78,7 @@ def pandoraDownloader():
 
         # Append the song in the playlist
         with open( playlist_path, 'a+' ) as playlist:
-            playlist.write( relative_song_path + "\n" )
+            playlist.write(( relative_song_path + "\n" ).encode("utf-8"))
         
         print( 'Download Complete!' )
         return jsonify( status = 'success' )

@@ -1,15 +1,16 @@
-$( function() {
+$(function() {
 
     // Variable to hold the url for the last song to play
     var currentSongUrl = undefined;
 
     // Setup the listener for pandora's outgoing requests
-    chrome.webRequest.onBeforeRequest.addListener( function( details ) {
+    chrome.webRequest.onBeforeRequest.addListener(( details ) => {
 
-        console.log( details.url );
+        // console.log( details.url );
 
         // Test the url against a regex of the different locations the songs live!
         if ( details.url.match( /(https?.*.com\/access\/.*)/i ) ) {
+            console.log('Found media file!', details.url);
             
             // Save the url
             currentSongUrl = details.url;
@@ -23,7 +24,7 @@ $( function() {
     // Send a message to content.js
     function sendMessage( type, data ) {
         // chrome.tabs.query( {active: true, currentWindow: true}, function(tabs) {
-        chrome.tabs.query( {url: "*://www.pandora.com/*"}, function(tabs) {
+        chrome.tabs.query( {url: "*://www.pandora.com/*"}, (tabs) => {
             chrome.tabs.sendMessage( tabs[0].id, {
                 type: type,
                 data: data
@@ -31,8 +32,8 @@ $( function() {
         });
     }
 
-    // Message handler for content.js which downlaods a song
-    chrome.runtime.onMessage.addListener( function( request, sender, sendResponse ) {
+    // Message handler for content.js which downloads a song
+    chrome.runtime.onMessage.addListener(( request, sender, sendResponse ) => {
 
         var song = '(' + request.title + ' - ' + request.artist + ')';
 
@@ -63,7 +64,7 @@ $( function() {
             url: 'http://127.0.0.1:5000/download',
             data: $.extend( request, {url: currentSongUrl} ),
             // Handle the responses we can get
-            success: function( data ) {
+            success: ( data ) => {
                 if ( data.status == 'alreadyDownloaded' ) {
                     sendMessage( "info", 'Song has already been downloaded!' )
                 }
@@ -74,7 +75,7 @@ $( function() {
             dataType: 'json',
             // async: false
         })
-        .fail(function(){
+        .fail(() => {
             sendMessage( "info", "The web server isn't running!" );
             sendMessage( "enableDownloadButton" );
         });
