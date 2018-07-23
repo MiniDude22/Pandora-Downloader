@@ -20,7 +20,7 @@ save_template = os.sep.join((
     "{artist}",
     "{album} - {title}.m4a"
     # "{title}.m4a"
-)).encode('utf-8')
+))
 
 # =============================================================================
 
@@ -28,19 +28,19 @@ app = Flask( "Pandora Downloader Server" )
 
 @app.route( '/download', methods=['POST'] )
 def pandoraDownloader():
-
+    print(request.form['station'].encode('utf-8'))
     playlist_path = os.sep.join((
         base_path,
-        re.sub(u'[<>\*:\\/\"|?]', '', request.form['station'].encode('utf-8') ) + ".m3u"
+        re.sub(u'[<>\*:\\/\"|?]', '', request.form['station'] ) + ".m3u"
     ))
 
     # Build the song's path - remove any invalid characters
     relative_song_path = save_template.format(
-        station = re.sub(u'[<>\*:\\/\"|?]', '', request.form['station'].encode('utf-8') ),
-        artist  = re.sub(u'[<>\*:\\/\"|?]', '', request.form['artist' ].encode('utf-8') ),
-        album   = re.sub(u'[<>\*:\\/\"|?]', '', request.form['album'  ].encode('utf-8') ),
-        title   = re.sub(u'[<>\*:\\/\"|?]', '', request.form['title'  ].encode('utf-8') )
-    ).decode('utf-8')
+        station = re.sub(u'[<>\*:\\/\"|?]', '', request.form['station'] ),
+        artist  = re.sub(u'[<>\*:\\/\"|?]', '', request.form['artist' ] ),
+        album   = re.sub(u'[<>\*:\\/\"|?]', '', request.form['album'  ] ),
+        title   = re.sub(u'[<>\*:\\/\"|?]', '', request.form['title'  ] )
+    )
 
     song_path = os.sep.join(( base_path, relative_song_path ))
 
@@ -51,24 +51,24 @@ def pandoraDownloader():
 
     else:
 
-        print( 'Downloading "' + request.form['title'].encode('utf-8') + '"' )
+        print( 'Downloading "' + request.form['title'] + '"' )
 
         # Create the directories if they don't exist
         if not os.path.isdir( os.path.split(song_path)[0] ): os.makedirs( os.path.split(song_path)[0] )
 
         # Download the song
-        urllib.urlretrieve( request.form['url'], song_path )
+        urllib.request.urlretrieve( request.form['url'], song_path )
 
         # Open the song with mutagen so we can tag it and put the album art in it
         song = MP4( song_path )
 
         # Set the tags
-        song['\xa9nam'] = [ request.form['title'].encode('utf-8')  ]
-        song['\xa9ART'] = [ request.form['artist'].encode('utf-8') ]
-        song['\xa9alb'] = [ request.form['album'].encode('utf-8')  ]
+        song['\xa9nam'] = [ request.form['title']]
+        song['\xa9ART'] = [ request.form['artist']]
+        song['\xa9alb'] = [ request.form['album']]
 
         # Download the album art and put it in the file
-        albumArtRequest = urllib.urlopen( request.form['albumArt'] )
+        albumArtRequest = urllib.request.urlopen( request.form['albumArt'] )
         albumArt = MP4Cover( albumArtRequest.read() )
         albumArtRequest.close()
 
