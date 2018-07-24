@@ -28,7 +28,6 @@ app = Flask( "Pandora Downloader Server" )
 
 @app.route( '/download', methods=['POST'] )
 def pandoraDownloader():
-    print(request.form['station'].encode('utf-8'))
     playlist_path = os.sep.join((
         base_path,
         re.sub(u'[<>\*:\\/\"|?]', '', request.form['station'] ) + ".m3u"
